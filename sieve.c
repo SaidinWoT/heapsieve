@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
             free(p);
             p = makeNode(n);
             insert(h, p);
-            /* printf("%d, ", n); */
+            /* printf("%llu, ", n); */
         } else {
             while(n == peek(h)) {
                 incHead(h);

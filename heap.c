@@ -38,18 +38,20 @@ void insert(Heap *h, HNode *n) {
     }
     while(ix > 0 && h->head[ix].v < h->head[(ix-1)/2].v) {
         swap(h, ix, (ix-1)/2);
-        ix /= 2;
+        ix = (ix-1)/2;
     }
 }
 
 void reheap(Heap *h) {
     HNode *a = h->head;
     unsigned int ix = 0;
-    while(ix <= h->size && (a[ix].v > a[ix*2+1].v || a[ix].v > a[ix*2+2].v)) {
-        if(a[ix*2+1].v < a[ix*2+2].v) {
+    while(ix <= h->tail && (a[ix].v > a[ix*2+1].v || a[ix].v > a[ix*2+2].v)) {
+        if(a[ix*2+1].v && a[ix*2+1].v < a[ix*2+2].v) {
             swap(h, ix, ix*2+1);
-        } else {
+            ix = ix*2+1;
+        } else if(a[ix*2+2].v) {
             swap(h, ix, ix*2+2);
+            ix = ix*2+2;
         }
     }
 }
