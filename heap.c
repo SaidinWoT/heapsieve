@@ -32,27 +32,33 @@ void swap(Heap *h, unsigned int in, unsigned int dex) {
 
 void insert(Heap *h, HNode *n) {
     unsigned int ix = h->tail;
+    unsigned int iy = (ix-1)/2;
     h->head[h->tail++] = *n;
     if(h->tail == h->size-1) {
         resize(h);
     }
-    while(ix > 0 && h->head[ix].v < h->head[(ix-1)/2].v) {
-        swap(h, ix, (ix-1)/2);
-        ix = (ix-1)/2;
+    while(ix > 0 && h->head[ix].v < h->head[iy].v) {
+        swap(h, ix, iy);
+        ix = iy;
+        iy = (ix-1)/2;
     }
 }
 
 void reheap(Heap *h) {
     HNode *a = h->head;
     unsigned int ix = 0;
-    while(ix <= h->tail && (a[ix].v > a[ix*2+1].v || a[ix].v > a[ix*2+2].v)) {
-        if(a[ix*2+1].v && a[ix*2+1].v < a[ix*2+2].v) {
-            swap(h, ix, ix*2+1);
-            ix = ix*2+1;
-        } else if(a[ix*2+2].v) {
-            swap(h, ix, ix*2+2);
-            ix = ix*2+2;
+    unsigned int iy = ix*2+1;
+    unsigned int iz = iy+1;
+    while(ix <= h->tail && (a[ix].v > a[iy].v || a[ix].v > a[iz].v)) {
+        if(a[iy].v && a[iy].v < a[iz].v) {
+            swap(h, ix, iy);
+            ix = iy;
+        } else if(a[iz].v) {
+            swap(h, ix, iz);
+            ix = iz;
         }
+        iy = ix*2+1;
+        iz = iy+1;
     }
 }
 
